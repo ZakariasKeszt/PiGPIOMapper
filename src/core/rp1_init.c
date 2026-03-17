@@ -1,9 +1,8 @@
-#include "rp1_gpio_init.h"
-
+#include "internal/rp1_init.h"
 
 int rp1_init(rp1_handler_t* handle){
 
-    handle->map_size = 0x100000;
+    handle.map_size = 0x100000;
 
     void* rp1_virtual_mem = MAP_FAILED;
     uintptr_t base_mem;
@@ -20,7 +19,7 @@ int rp1_init(rp1_handler_t* handle){
 
     rp1_virtual_mem = mmap(
         NULL,
-        handle->map_size,
+        handle.map_size,
         PROT_READ | PROT_WRITE,
         MAP_SHARED,
         fd,
@@ -34,8 +33,8 @@ int rp1_init(rp1_handler_t* handle){
         return -1;
     }
 
-    handle->file_descriptor = fd;
-    handle->base_mem = (uintptr_t)rp1_virtual_mem;
+    handle.file_descriptor = fd;
+    handle.base_mem = (uintptr_t)rp1_virtual_mem;
 
     return 0;
 }
@@ -44,9 +43,9 @@ int rp1_close(rp1_handler_t* handler){
 
     if(!handle) return -1;
 
-    if(handle->base_mem != (uintptr_t)MAP_FAILED && handle->base_mem != 0){
-        munmap((void*)handle->base_mem, handle->map_size);
-        handle->base_mem = (uintptr_t)MAP_FAILED;
+    if(handle.base_mem != (uintptr_t)MAP_FAILED && handle.base_mem != 0){
+        munmap((void*)handle.base_mem, handle.map_size);
+        handle.base_mem = (uintptr_t)MAP_FAILED;
     }
 
     return 0;

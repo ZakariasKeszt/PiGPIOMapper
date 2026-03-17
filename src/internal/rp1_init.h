@@ -7,12 +7,11 @@
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <unistd.h>
-#include "registers.h"
 
 #define RP1_BASE_OFFSET 0x40000000u;
 
 typedef struct{
-    uintptr_t base_mem;
+    volatile uintptr_t base_mem;
     size_t map_size;
     int file_descriptor;
 } rp1_handler_t;
