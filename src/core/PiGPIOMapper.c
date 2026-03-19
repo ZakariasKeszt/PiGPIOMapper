@@ -4,10 +4,16 @@
 #include "rp1_init.h"
 #include "rp1_gpio_init.h"
 #include <stdio.h>
-
+#include <stdlib.h>
 
 rp1_handle_t* init_gpio(void){
-    rp1_handle_t *rp1_handle;
+    rp1_handle_t *rp1_handle = malloc(sizeof(rp1_handle_t));
+
+    if(rp1_handle == NULL){
+        perror("failed to allocate memory for chip handle");
+        return NULL;
+    }
+
     if(rp1_init(rp1_handle) == 0){
         printf("rp1 chip opened...");
         return rp1_handle;
@@ -15,6 +21,11 @@ rp1_handle_t* init_gpio(void){
     else{
         perror("rp1 chip failed to open...");
     }
+}
+
+void close_chip(rp1_handle_t *handle){
+    rp1_close(handle);
+    free(handle);
 }
 
 gpio_handle_t* create_gpio_pin(rp1_handle_t *rp1_handle, rp1_gpio_select_t gpio){
