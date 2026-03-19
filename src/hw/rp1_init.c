@@ -13,9 +13,7 @@ int rp1_init(rp1_handle_t* handle){
         perror("Failed to open /dev/mem (do you have root priviliges?)\n");
         return -1;
     }
-    else{
-        printf("opened /dev/mem!\n");
-    }
+
 
     rp1_virtual_mem = mmap(
         NULL,
@@ -26,7 +24,7 @@ int rp1_init(rp1_handle_t* handle){
         base_mem
     );
 
-    close(fd);
+
 
     if(rp1_virtual_mem == MAP_FAILED){
         perror("mmap failed\n");
@@ -35,7 +33,7 @@ int rp1_init(rp1_handle_t* handle){
 
     handle->file_descriptor = fd;
     handle->base_mem = (uintptr_t)rp1_virtual_mem;
-    printf("base mem: %x, map size: %d")
+    close(fd);
     return 0;
 }
 
