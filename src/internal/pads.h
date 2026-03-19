@@ -10,6 +10,8 @@
 #ifndef PADS_H
 #define PADS_H
 
+#include "rp1_gpio_init.h"
+
 typedef enum{
     RP1_PADS_SET_VOLTAGE_3V3,
     RP1_PADS_SET_VOLTAGE_1V8
@@ -22,9 +24,7 @@ typedef enum{
     RP1_PADS_DRIVE_12MA
 }rp1_pads_drive_t;
 
-int pads_set_voltage(gpio_handle_t* handle, rp1_pads_voltage_select_t select);
+int pads_set_voltage(rp1_handle_t* handle, rp1_pads_voltage_select_t select);
 int pads_set_drive(gpio_handle_t* handle, rp1_pads_drive_t select);
 
 #endif /* PADS_H */
-
-

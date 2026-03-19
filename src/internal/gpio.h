@@ -10,9 +10,7 @@
 #ifndef GPIO_H
 #define GPIO_H
 
-#include "registers.h"
 #include "rp1_gpio_init.h"
-#include "rp1_init.h"
 
 typedef enum{
     RP1_GPIO_IRQOVERRIDE_DEF,
@@ -81,8 +79,14 @@ int gpio_set_oeoverride(gpio_handle_t* handle, rp1_gpio_oeoverride_t state);
 int gpio_set_inoverride(gpio_handle_t* handle, rp1_gpio_inoverride_t state);
 int gpio_set_outoverride(gpio_handle_t* handle, rp1_gpio_outoverride_t state);
 
-int rio_set_out_state(gpio_handle_t* handle, rp1_rio_out_state_t state);
-int rio_set_oe_enable(gpio_handle_t* handle, rp1_rio_oe_enable_t enable);
-int rio_set_in_enable(gpio_handle_t* handle, rp1_rio_in_enable_t enable);
+int rio_set_out_state(rio_handle_t* handle, rp1_rio_out_state_t state);
+int rio_set_oe_state(rio_handle_t* handle, rp1_rio_oe_enable_t enable);
+int rio_set_in_state(rio_handle_t* handle, rp1_rio_in_enable_t enable);
+int rio_clr_out_state(rio_handle_t* handle, rp1_rio_out_state_t state);
+int rio_clr_oe_state(rio_handle_t* handle, rp1_rio_oe_enable_t state);
+int rio_clr_in_state(rio_handle_t* handle, rp1_rio_in_enable_t state);
+int rio_xor_out_state(rio_handle_t* handle, rp1_rio_out_state_t state);
+int rio_xor_oe_state(rio_handle_t* handle, rp1_rio_oe_enable_t state);
+int rio_xor_in_state(rio_handle_t* handle, rp1_rio_in_enable_t state);
 
 #endif /* GPIO_H */

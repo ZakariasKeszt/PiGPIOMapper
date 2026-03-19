@@ -12,7 +12,6 @@
  * @par Design choices:
  *     - Explicit offsets are provided for grep-ability and hardware function use.
  *     - Macros provided for dynamic indexing.
- *     - Inline helper functions included for register READ/WRITE and bit manipulation.
  *
  * @copyright Copyright (c) 2026 Zakariás Keszthelyi. All rights reserved.
  */
@@ -174,26 +173,5 @@
 
 /* ---- Macro for Pads dynamic indexing ---- */
 #define RP1_PAD_GPIO(n)   ((uintptr_t)(0x0004u+((uintptr_t)(n)*0x0004u)))
-
-/* ---- MMIO helper functions ---- */
-static inline volatile uint32_t* REG_ADDR32(uintptr_t address){
-    return (volatile uint32_t*)address;
-}
-
-static inline uint32_t REG_READ32(uintptr_t address){
-    return *(volatile uint32_t*)address;
-}
-
-static inline void REG_WRITE32(uintptr_t address, uint32_t value){
-    *(volatile uint32_t*)address = value;
-}
-
-static inline void REG_SET32(uintptr_t address, uint32_t mask){
-    *(volatile uint32_t*)address |= mask;
-}
-
-static inline void REG_CLR32(uintptr_t address, uint32_t mask){
-    *(volatile uint32_t*)address &= (~mask);
-}
 
 #endif /* REGISTERS_H */

@@ -2,6 +2,7 @@
 #ifndef GPIO_TYPES_H
 #define GPIO_TYPES_H
 
+#include <stdint.h>
 typedef union{
     struct{
         uint32_t FUNCSEL : 5;
