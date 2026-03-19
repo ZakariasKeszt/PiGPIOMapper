@@ -42,15 +42,17 @@ gpio_handle_t* create_gpio_pin(rp1_handle_t *rp1_handle, rp1_gpio_select_t gpio)
     }
 }
 
-int set_gpio_output(gpio_handle_t gpio_handle, gpio_output_t output){
-    gpio_func_select(&gpio_handle, RP1_GPIO_FUNCSEL_ALT0);
+int set_gpio_output(gpio_handle_t *gpio_handle, gpio_output_t output){
+    gpio_func_select(gpio_handle, RP1_GPIO_FUNCSEL_ALT0);
     if(output == HIGH){
         rio_set_oe_state(&rio_handle, RP1_RIO_OE_ENABLE);
         rio_set_out_state(&rio_handle, RP1_RIO_OUT_HIGH);
+        printf("gpio is set high");
     }
     else if(output == LOW){
         rio_clr_out_state(&rio_handle, RP1_RIO_OUT_HIGH);
         rio_clr_oe_state(&rio_handle, RP1_RIO_OE_ENABLE);
+        printf("gpio is set low");
     }
 
     return 0;

@@ -44,6 +44,6 @@ typedef struct rp1_handle_s rp1_handle_t;
 
 rp1_handle_t* init_gpio(void);
 gpio_handle_t* create_gpio_pin(rp1_handle_t* rp1_handle, rp1_gpio_select_t gpio);
-int set_gpio_output(gpio_handle_t gpio_handle, gpio_output_t output);
+int set_gpio_output(gpio_handle_t* gpio_handle, gpio_output_t output);
 
 #endif /* PIGPIOMAPPER_H */
