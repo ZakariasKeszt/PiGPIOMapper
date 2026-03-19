@@ -33,6 +33,7 @@ int rp1_init(rp1_handle_t* handle){
 
     handle->file_descriptor = fd;
     handle->base_mem = (uintptr_t)rp1_virtual_mem;
+    printf("base mem: %p\n", (void*)handle->base_mem);
     close(fd);
     return 0;
 }

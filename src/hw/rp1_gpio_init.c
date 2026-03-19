@@ -42,12 +42,15 @@ int rp1_gpio_init(rp1_handle_t* handle, gpio_handle_t* gpio_handle, rp1_gpio_sel
     uint32_t select = (uint32_t)rp1_gpio_select_lookup[sel];
     volatile uintptr_t gpio_base = handle->base_mem+RP1_GPIO_BASE;
     volatile uintptr_t pad_base =  handle->base_mem+RP1_PADS_BASE;
-
+    printf("gpio_base:  %p, pad_base: %p\n");
     gpio_handle->GPIO_CTRL = (volatile rp1_gpio_ctrl_reg_t*)gpio_base + RP1_GPIO_CONTROL_OFFSET(select);
     gpio_handle->GPIO_STATUS = (volatile rp1_gpio_status_reg_t*)gpio_base + RP1_GPIO_STATUS_OFFSET(select);
     gpio_handle->PAD_REG = (volatile rp1_pads_ctrl_reg_t*)pad_base + RP1_PAD_GPIO(select);
     gpio_handle->rio_pin_mask = (1u << select);
-
+    printf("GPIO_CTRL:   %p\n", (void*)gpio_handle->GPIO_CTRL);
+    printf("GPIO_STATUS: %p\n", (void*)gpio_handle->GPIO_STATUS);
+    printf("PAD_REG:     %p\n", (void*)gpio_handle->PAD_REG);
+    printf("RIO_MASK:    0x%08x\n", gpio_handle->rio_pin_mask);
 	rp1_rio_init(handle);
 	rp1_pads_init(handle);
 
@@ -58,6 +61,9 @@ static void rp1_rio_init(rp1_handle_t* handle){
 	rio_handle.rio_out = (volatile uint32_t*)(handle->base_mem + RP1_SYS_RIO_BASE + RP1_RIO_OUT);
 	rio_handle.rio_oe = (volatile uint32_t*)(handle->base_mem + RP1_SYS_RIO_BASE + RP1_RIO_OE);
 	rio_handle.rio_in = (volatile uint32_t*)(handle->base_mem + RP1_SYS_RIO_BASE + RP1_RIO_IN);
+	printf("RIO_OUT:     %p\n", (void*)rio_handle.rio_out);
+    printf("RIO_OE:      %p\n", (void*)rio_handle.rio_oe);
+    printf("RIO_IN:      %p\n", (void*)rio_handle.rio_in);
 }
 
 static void rp1_pads_init(rp1_handle_t* handle){
