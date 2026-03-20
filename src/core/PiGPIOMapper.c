@@ -43,6 +43,7 @@ gpio_handle_t* create_gpio_pin(rp1_handle_t *rp1_handle, rp1_gpio_select_t gpio)
 }
 
 void set_gpio_output_high(gpio_handle_t *gpio_handle){
+    pads_output_enable(gpio_handle);
     gpio_func_select(gpio_handle, RP1_GPIO_FUNCSEL_ALT5);
     rio_set_oe(&rio_handle, gpio_handle);
     rio_set_out(&rio_handle, gpio_handle);
@@ -50,6 +51,7 @@ void set_gpio_output_high(gpio_handle_t *gpio_handle){
 }
 
 void set_gpio_output_low(gpio_handle_t *gpio_handle){
+    pads_output_disable(gpio_handle);
     gpio_func_select(gpio_handle, RP1_GPIO_FUNCSEL_ALT5);
     rio_clr_out(&rio_handle, gpio_handle);
     rio_clr_oe(&rio_handle, gpio_handle);

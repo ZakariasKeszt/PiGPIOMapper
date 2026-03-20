@@ -24,7 +24,9 @@ typedef enum{
     RP1_PADS_DRIVE_12MA
 }rp1_pads_drive_t;
 
-int pads_set_voltage(rp1_handle_t* handle, rp1_pads_voltage_select_t select);
-int pads_set_drive(gpio_handle_t* handle, rp1_pads_drive_t select);
+void pads_set_voltage(rp1_handle_t* handle, rp1_pads_voltage_select_t select);
+void pads_set_drive(gpio_handle_t* handle, rp1_pads_drive_t select);
+void pads_output_enable(gpio_handle_t* handle);
+void pads_output_disable(gpio_handle_t* handle);
 
 #endif /* PADS_H */

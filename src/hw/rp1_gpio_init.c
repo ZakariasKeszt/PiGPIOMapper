@@ -52,6 +52,7 @@ int rp1_gpio_init(rp1_handle_t* handle, gpio_handle_t* gpio_handle, rp1_gpio_sel
     printf("RIO_MASK:    0x%08x\n", gpio_handle->rio_pin_mask);
 	rp1_rio_init(handle);
 
+
     return 0;
 }
 
