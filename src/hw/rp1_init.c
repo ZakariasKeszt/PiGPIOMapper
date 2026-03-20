@@ -1,5 +1,6 @@
 #include "rp1_init.h"
 
+
 int rp1_init(rp1_handle_t* handle){
 
     handle->map_size = 0x100000;
@@ -35,6 +36,8 @@ int rp1_init(rp1_handle_t* handle){
     handle->base_mem = (uintptr_t)rp1_virtual_mem;
     printf("base mem: %p\n", (void*)handle->base_mem);
     close(fd);
+
+    rp1_pads_voltage_ctl_init(handle);
     return 0;
 }
 
@@ -48,4 +51,8 @@ int rp1_close(rp1_handle_t* handle){
     }
 
     return 0;
+}
+
+static void rp1_pads_voltage_ctl_init(rp1_handle_t* handle){
+    handle->voltage_ctrl = ((uintptr_t)handle->base_mem + RP1_PADS_BASE + RP1_VOLTAGE_SELECT_PAD);
 }

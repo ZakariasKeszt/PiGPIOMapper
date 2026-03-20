@@ -57,36 +57,22 @@ typedef enum{
     RP1_GPIO_FUNCSEL_ALT8
 }rp1_gpio_funcsel_t;
 
-typedef enum{
-    RP1_RIO_OUT_LOW,
-    RP1_RIO_OUT_HIGH
-}rp1_rio_out_state_t;
 
-typedef enum{
-    RP1_RIO_OE_DISABLE,
-    RP1_RIO_OE_ENABLE
-}rp1_rio_oe_enable_t;
 
-typedef enum{
-    RP1_RIO_IN_DISABLE,
-    RP1_RIO_IN_ENABLE
-}rp1_rio_in_enable_t;
+void gpio_func_select(gpio_handle_t* handle, rp1_gpio_funcsel_t sel);
+void gpio_set_irqoverride(gpio_handle_t* handle, rp1_gpio_irqoverride_t state);
+void gpio_set_irqreset(gpio_handle_t* handle, rp1_gpio_irqreset_t state);
+void gpio_set_oeoverride(gpio_handle_t* handle, rp1_gpio_oeoverride_t state);
+void gpio_set_inoverride(gpio_handle_t* handle, rp1_gpio_inoverride_t state);
+void gpio_set_outoverride(gpio_handle_t* handle, rp1_gpio_outoverride_t state);
 
-int gpio_func_select(gpio_handle_t* handle, rp1_gpio_funcsel_t sel);
-int gpio_set_irqoverride(gpio_handle_t* handle, rp1_gpio_irqoverride_t state);
-int gpio_set_irqreset(gpio_handle_t* handle, rp1_gpio_irqreset_t state);
-int gpio_set_oeoverride(gpio_handle_t* handle, rp1_gpio_oeoverride_t state);
-int gpio_set_inoverride(gpio_handle_t* handle, rp1_gpio_inoverride_t state);
-int gpio_set_outoverride(gpio_handle_t* handle, rp1_gpio_outoverride_t state);
-
-int rio_set_out_state(rio_handle_t* handle, rp1_rio_out_state_t state);
-int rio_set_oe_state(rio_handle_t* handle, rp1_rio_oe_enable_t enable);
-int rio_set_in_state(rio_handle_t* handle, rp1_rio_in_enable_t enable);
-int rio_clr_out_state(rio_handle_t* handle, rp1_rio_out_state_t state);
-int rio_clr_oe_state(rio_handle_t* handle, rp1_rio_oe_enable_t state);
-int rio_clr_in_state(rio_handle_t* handle, rp1_rio_in_enable_t state);
-int rio_xor_out_state(rio_handle_t* handle, rp1_rio_out_state_t state);
-int rio_xor_oe_state(rio_handle_t* handle, rp1_rio_oe_enable_t state);
-int rio_xor_in_state(rio_handle_t* handle, rp1_rio_in_enable_t state);
-
+void rio_set_out(rio_handle_t* rio_handle, gpio_handle_t* gpio_handle);
+void rio_set_in(rio_handle_t* rio_handle, gpio_handle_t* gpio_handle);
+void rio_set_oe(rio_handle_t* rio_handle, gpio_handle_t* gpio_handle);
+void rio_clr_out(rio_handle_t* rio_handle, gpio_handle_t* gpio_handle);
+void rio_clr_in(rio_handle_t* rio_handle, gpio_handle_t* gpio_handle);
+void rio_clr_oe(rio_handle_t* rio_handle, gpio_handle_t* gpio_handle);
+void rio_xor_out(rio_handle_t* rio_handle, gpio_handle_t* gpio_handle);
+void rio_xor_in(rio_handle_t* rio_handle, gpio_handle_t* gpio_handle);
+void rio_xor_oe(rio_handle_t* rio_handle, gpio_handle_t* gpio_handle);
 #endif /* GPIO_H */

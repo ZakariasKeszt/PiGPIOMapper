@@ -1,4 +1,5 @@
 #include "gpio.h"
+#include "PiGPIOMapper.h"
 
 static const int rp1_gpio_irqoverride_lookup[] = {
     [RP1_GPIO_IRQOVERRIDE_DEF] =   0x00,
@@ -45,122 +46,80 @@ static const int rp1_gpio_funcsel_lookup[] = {
     [RP1_GPIO_FUNCSEL_ALT8] = 0x08
 };
 
-static const int rp1_rio_in_enable_lookup[] = {
-    [RP1_RIO_IN_DISABLE] = 0x00,
-    [RP1_RIO_IN_ENABLE] = 0x01
-};
 
-static const int rp1_rio_oe_enable_lookup[] = {
-    [RP1_RIO_OE_DISABLE] = 0x00,
-    [RP1_RIO_OE_ENABLE] = 0x01
-};
-
-static const int rp1_rio_out_state_lookup[] = {
-    [RP1_RIO_OUT_LOW] = 0x00,
-    [RP1_RIO_OUT_HIGH] = 0x01
-};
-
-int gpio_func_select(gpio_handle_t* handle, rp1_gpio_funcsel_t sel){
+void gpio_func_select(gpio_handle_t* handle, rp1_gpio_funcsel_t sel){
     uint32_t select = rp1_gpio_funcsel_lookup[sel];
     handle->GPIO_CTRL->bit.FUNCSEL = select;
-
-    return 0;
 }
 
-int gpio_set_irqoverride(gpio_handle_t* handle, rp1_gpio_irqoverride_t state){
+void gpio_set_irqoverride(gpio_handle_t* handle, rp1_gpio_irqoverride_t state){
     uint32_t select = rp1_gpio_irqoverride_lookup[state];
     handle->GPIO_CTRL->bit.IRQOVER = select;
-
-    return 0;
 }
 
-int gpio_set_irqreset(gpio_handle_t* handle, rp1_gpio_irqreset_t state){
+void gpio_set_irqreset(gpio_handle_t* handle, rp1_gpio_irqreset_t state){
     uint32_t select = rp1_gpio_irqreset_lookup[state];
     handle->GPIO_CTRL->bit.IRQRESET = select;
-
-    return 0;
 }
 
-int gpio_set_oeoverride(gpio_handle_t* handle, rp1_gpio_oeoverride_t state){
+void gpio_set_oeoverride(gpio_handle_t* handle, rp1_gpio_oeoverride_t state){
     uint32_t select = rp1_gpio_oeoverride_lookup[state];
     handle->GPIO_CTRL->bit.OEOVER = select;
-
-    return 0;
 }
 
-int gpio_set_inoverride(gpio_handle_t* handle, rp1_gpio_inoverride_t state){
+void gpio_set_inoverride(gpio_handle_t* handle, rp1_gpio_inoverride_t state){
     uint32_t select = rp1_gpio_inoverride_lookup[state];
     handle->GPIO_CTRL->bit.INOVER = select;
-
-    return 0;
 }
 
-int gpio_set_outoverride(gpio_handle_t* handle, rp1_gpio_outoverride_t state){
+void gpio_set_outoverride(gpio_handle_t* handle, rp1_gpio_outoverride_t state){
     uint32_t select = rp1_gpio_outoverride_lookup[state];
     handle->GPIO_CTRL->bit.OUTOVER = select;
-
-    return 0;
 }
 
-int rio_set_out_state(rio_handle_t* handle, rp1_rio_out_state_t state){
-    uint32_t select = rp1_rio_out_state_lookup[state];
-    *(volatile uint32_t*)(handle->rio_out + RP1_SET_OFFSET) = select;
 
-    return 0;
+
+void rio_set_out(rio_handle_t* rio_handle, gpio_handle_t* gpio_handle){
+    uint32_t mask = gpio_handle->rio_pin_mask;
+    *(volatile uint32_t*)((uintptr_t)rio_handle->rio_out + RP1_SET_OFFSET) = mask;
 }
 
-int rio_clr_out_state(rio_handle_t* handle, rp1_rio_out_state_t state){
-    uint32_t select = rp1_rio_out_state_lookup[state];
-    *(volatile uint32_t*)(handle->rio_out + RP1_CLR_OFFSET) = select;
-
-    return 0;
+void rio_set_in(rio_handle_t* rio_handle, gpio_handle_t* gpio_handle){
+    uint32_t mask = gpio_handle->rio_pin_mask;
+    *(volatile uint32_t*)((uintptr_t)rio_handle->rio_in + RP1_SET_OFFSET) = mask;
 }
 
-int rio_xor_out_state(rio_handle_t* handle, rp1_rio_out_state_t state){
-    uint32_t select = rp1_rio_out_state_lookup[state];
-    *(volatile uint32_t*)(handle->rio_out + RP1_XOR_OFFSET) = select;
-
-    return 0;
+void rio_set_oe(rio_handle_t* rio_handle, gpio_handle_t* gpio_handle){
+    uint32_t mask = gpio_handle->rio_pin_mask;
+    *(volatile uint32_t*)((uintptr_t)rio_handle->rio_oe + RP1_SET_OFFSET) = mask;
 }
 
-int rio_set_oe_state(rio_handle_t* handle, rp1_rio_oe_enable_t state){
-    uint32_t select = rp1_rio_oe_enable_lookup[state];
-    *(volatile uint32_t*)(handle->rio_oe + RP1_SET_OFFSET) = select;
-
-    return 0;
+void rio_clr_out(rio_handle_t* rio_handle, gpio_handle_t* gpio_handle){
+    uint32_t mask = gpio_handle->rio_pin_mask;
+    *(volatile uint32_t*)((uintptr_t)rio_handle->rio_out + RP1_CLR_OFFSET) = mask;
 }
 
-int rio_clr_oe_state(rio_handle_t* handle, rp1_rio_oe_enable_t state){
-    uint32_t select = rp1_rio_oe_enable_lookup[state];
-    *(volatile uint32_t*)(handle->rio_oe + RP1_CLR_OFFSET) = select;
-
-    return 0;
+void rio_clr_in(rio_handle_t* rio_handle, gpio_handle_t* gpio_handle){
+    uint32_t mask = gpio_handle->rio_pin_mask;
+    *(volatile uint32_t*)((uintptr_t)rio_handle->rio_in + RP1_CLR_OFFSET) = mask;
 }
 
-int rio_xor_oe_state(rio_handle_t* handle, rp1_rio_oe_enable_t state){
-    uint32_t select = rp1_rio_oe_enable_lookup[state];
-    *(volatile uint32_t*)(handle->rio_oe + RP1_XOR_OFFSET) = select;
-
-    return 0;
+void rio_clr_oe(rio_handle_t* rio_handle, gpio_handle_t* gpio_handle){
+    uint32_t mask = gpio_handle->rio_pin_mask;
+    *(volatile uint32_t*)((uintptr_t)rio_handle->rio_oe + RP1_CLR_OFFSET) = mask;
 }
 
-int rio_set_in_state(rio_handle_t* handle, rp1_rio_in_enable_t state){
-    uint32_t select = rp1_rio_in_enable_lookup[state];
-    *(volatile uint32_t*)(handle->rio_in + RP1_SET_OFFSET) = select;
-
-    return 0;
+void rio_xor_out(rio_handle_t* rio_handle, gpio_handle_t* gpio_handle){
+    uint32_t mask = gpio_handle->rio_pin_mask;
+    *(volatile uint32_t*)((uintptr_t)rio_handle->rio_out + RP1_XOR_OFFSET) = mask;
 }
 
-int rio_clr_in_state(rio_handle_t* handle, rp1_rio_in_enable_t state){
-    uint32_t select = rp1_rio_in_enable_lookup[state];
-    *(volatile uint32_t*)(handle->rio_in + RP1_CLR_OFFSET) = select;
-
-    return 0;
+void rio_xor_in(rio_handle_t* rio_handle, gpio_handle_t* gpio_handle){
+    uint32_t mask = gpio_handle->rio_pin_mask;
+    *(volatile uint32_t*)((uintptr_t)rio_handle->rio_in + RP1_XOR_OFFSET) = mask;
 }
 
-int rio_xor_in_state(rio_handle_t* handle, rp1_rio_in_enable_t state){
-    uint32_t select = rp1_rio_in_enable_lookup[state];
-    *(volatile uint32_t*)(handle->rio_in + RP1_XOR_OFFSET) = select;
-
-    return 0;
+void rio_xor_oe(rio_handle_t* rio_handle, gpio_handle_t* gpio_handle){
+    uint32_t mask = gpio_handle->rio_pin_mask;
+    *(volatile uint32_t*)((uintptr_t)rio_handle->rio_oe + RP1_XOR_OFFSET) = mask;
 }

@@ -7,7 +7,12 @@
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <unistd.h>
+#include "registers.h"
 #include "gpio_types.h"
+/* only for pc test */
+#include <malloc.h>
+#include <string.h>
+
 
 #define RP1_BASE_OFFSET 0x40000000u;
 
@@ -20,5 +25,5 @@ typedef struct rp1_handle_s{
 
 int rp1_init(rp1_handle_t *handle);
 int rp1_close(rp1_handle_t *handle);
-
+static void rp1_pads_voltage_ctl_init(rp1_handle_t* handle);
 #endif /*RP1_INIT_H*/

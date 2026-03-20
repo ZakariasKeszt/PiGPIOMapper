@@ -12,6 +12,7 @@
 #define RP1_GPIO_INIT_H
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "PiGPIOMapper.h"
 #include "registers.h"
 #include "gpio_types.h"
